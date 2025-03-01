@@ -1,0 +1,28 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment variables
+.env
+
+# Database files
+*.sqlite
+*.sqlite3
+
+# Logs
+logs
+*.log
+
+# Build outputs
+dist/
+build/
+
+# IDE settings
+.vscode/
+.idea/
+.DS_Store
+
+# PostgreSQL files
+pgdata/
+dump.sql
