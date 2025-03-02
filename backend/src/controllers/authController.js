@@ -7,14 +7,15 @@ export async function signup(req, res) {
 
   try {
     const hashedPassword = await bcryptjs.hash(password, 10);
-    const result = await pool.query(
-      "INSERT INTO user (email, password) VALUES ($1, $2) RETURNING id, email",
+    const user = await pool.query(
+      "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email",
       [email, hashedPassword]
     );
 
-    res
-      .status(201)
-      .json({ message: "Usuário registrado.", user: result.rows[0] });
+    res.status(201).json({
+      message: "Usuário registrado.",
+      user: { ...user.rows[0], password: "" },
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -49,7 +50,12 @@ export async function login(req, res) {
       expiresIn: "1h",
     });
 
-    res.json({ token });
+    res.json({
+      message: "Login realizado.",
+      user: { ...user.rows[0], password: "", secret_2fa: "" },
+
+      token,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
