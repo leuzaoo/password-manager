@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("password-manager")?.value;
@@ -7,12 +7,12 @@ export function middleware(req: NextRequest) {
     req.nextUrl.pathname === "/login" || req.nextUrl.pathname === "/signup";
 
   if (token && isAuthPage) {
-    return NextResponse.redirect(new URL("/", req.url));
+    return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
-  const protectedRoute = ["/dashboard/:path*"];
+  const isProtectedRoute = req.nextUrl.pathname.startsWith("/dashboard");
 
-  if (!token && protectedRoute) {
+  if (!token && isProtectedRoute) {
     const callbackUrl = encodeURIComponent(req.nextUrl.pathname);
     return NextResponse.redirect(
       new URL(`/login?callbackUrl=${callbackUrl}`, req.url),
@@ -23,5 +23,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: "/dashboard/:path*",
+  matcher: ["/login", "/signup", "/dashboard/:path*"],
 };

@@ -58,3 +58,39 @@ export async function login(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+
+export async function logout(req, res) {
+  try {
+    res.clearCookie("password-manager");
+
+    return res.status(200).json({ success: true, message: "Logout realizado" });
+  } catch (error) {
+    console.log("Erro no controlador de Logout:", error.message);
+    res
+      .status(500)
+      .json({ success: false, message: "Erro no servidor interno." });
+  }
+}
+// todo: we aren't using this function below, we need to start to use.
+export async function checkAuth(req, res) {
+  try {
+    if (!req.userId) {
+      return res.status(404).json({ message: "ID de usuário inválido." });
+    }
+
+    const user = await pool.query("SELECT id, email FROM users WHERE id = $1", [
+      req.userId,
+    ]);
+
+    if (user.rows.length === 0) {
+      return res.status(404).json({ message: "Usuário não encontrado." });
+    }
+
+    res.status(200).json({ success: true, user: user.rows[0] });
+  } catch (error) {
+    console.error("Erro no controlador checkAuth:", error.message);
+    res
+      .status(500)
+      .json({ success: false, message: "Erro no servidor interno." });
+  }
+}
