@@ -1,6 +1,7 @@
 import pool from "../config/dbConfig.js";
 import bcryptjs from "bcryptjs";
-import jwt from "jsonwebtoken";
+
+import generateToken from "./../config/generateToken.js";
 
 export async function signup(req, res) {
   const { email, password } = req.body;
@@ -46,14 +47,11 @@ export async function login(req, res) {
         .json({ message: "Dados ou credenciais inválidos." });
     }
 
-    const token = jwt.sign({ id: user.rows[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(user._id, res);
 
     res.json({
       message: "Login realizado.",
-      user: { ...user.rows[0], password: "", secret_2fa: "" },
-
+      user: { ...user.rows[0], password: "" },
       token,
     });
   } catch (error) {
