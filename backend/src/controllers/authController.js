@@ -71,7 +71,7 @@ export async function logout(req, res) {
       .json({ success: false, message: "Erro no servidor interno." });
   }
 }
-
+// todo at this line
 export async function checkAuth(req, res) {
   try {
     if (!req.userId) {
