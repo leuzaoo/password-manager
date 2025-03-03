@@ -4,7 +4,8 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "create:usertable": "node src/scripts/userTable.js"
   },
   "keywords": [],
   "author": "",
