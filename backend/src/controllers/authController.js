@@ -13,9 +13,12 @@ export async function signup(req, res) {
       [email, hashedPassword]
     );
 
+    const token = generateToken(user._id, res);
+
     res.status(201).json({
       message: "Usuário registrado.",
       user: { ...user.rows[0], password: "" },
+      token,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
