@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Link from "next/link";
 
@@ -7,7 +8,6 @@ import { useAuthStore } from "../store/auth.store";
 
 import MainButton from "../components/common/button";
 import MainInput from "../components/ui/input";
-import { useRouter } from "next/navigation";
 
 const SignupPage = () => {
   const [email, setEmail] = useState("");

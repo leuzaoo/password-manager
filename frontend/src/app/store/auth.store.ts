@@ -14,14 +14,13 @@ const deleteCookie = (name: string) => {
 };
 
 export interface User {
-  name: string;
   email: string;
   password: string;
   id?: string;
 }
 
 interface AuthState {
-  user: User | null | unknown;
+  user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   message: string | null;

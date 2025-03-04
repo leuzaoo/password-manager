@@ -2,12 +2,12 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
+import Link from "next/link";
 
 import { useAuthStore } from "../store/auth.store";
 
 import MainButton from "../components/common/button";
 import MainInput from "../components/ui/input";
-import Link from "next/link";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -34,7 +34,7 @@ const LoginPage = () => {
       <h1 className="text-5xl font-semibold">Access your account.</h1>
       <p>
         Don&apos;t have account yet?{" "}
-        <Link href="/signup" className="hover:underline text-blue-400">
+        <Link href="/signup" className="text-blue-400 hover:underline">
           Click here to create
         </Link>
         .
