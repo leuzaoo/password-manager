@@ -16,16 +16,18 @@ const deleteCookie = (name: string) => {
 export interface User {
   name: string;
   email: string;
+  password: string;
   id?: string;
 }
 
 interface AuthState {
-  user: User | null;
+  user: User | null | unknown;
   isAuthenticated: boolean;
   isLoading: boolean;
   message: string | null;
   error: string | null;
   login: (email: string, password: string) => Promise<void>;
+  signup: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   loadUserFromStorage: () => void;
 }
@@ -87,6 +89,41 @@ export const useAuthStore = create<AuthState>((set) => ({
 
       if (response) {
         const errorMessage = response.data?.message || "Erro ao fazer login";
+        toast.error(errorMessage);
+        set({ error: errorMessage, isLoading: false });
+      } else {
+        toast.error("Erro de conexão");
+        set({ error: "Erro de conexão", isLoading: false });
+      }
+    }
+  },
+
+  signup: async (email, password) => {
+    set({ isLoading: true });
+
+    try {
+      const response: AxiosResponse<{ user: User; message: string }> =
+        await axios.post(`${AUTH_API_URL}/signup`, {
+          email,
+          password,
+        });
+
+      localStorage.setItem("auth_user", JSON.stringify(response.data.user));
+
+      set({
+        user: response.data.user,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      });
+
+      toast.success(response.data.message || "Conta criada.");
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>;
+      const response = axiosError.message;
+
+      if (response) {
+        const errorMessage = "Erro ao fazer login";
         toast.error(errorMessage);
         set({ error: errorMessage, isLoading: false });
       } else {
