@@ -1,46 +1,44 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
+import Link from "next/link";
 
 import { useAuthStore } from "../store/auth.store";
 
 import MainButton from "../components/common/button";
 import MainInput from "../components/ui/input";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-const LoginPage = () => {
+const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
-  const { login, isLoading, error } = useAuthStore();
+  const { signup, isLoading, error } = useAuthStore();
 
-  const handleLogin = async (e: { preventDefault: () => void }) => {
+  const handleSignup = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    await login(email, password);
+    await signup(email, password);
 
     setTimeout(() => {
-      router.push(callbackUrl);
-    }, 500);
+      router.push("/dashboard");
+    });
   };
 
   return (
     <section className="mx-auto flex h-screen w-screen max-w-7xl flex-col items-center justify-center">
-      <h1 className="text-5xl font-semibold">Access your account.</h1>
+      <h1 className="text-5xl font-semibold">Create your account</h1>
       <p>
-        Don&apos;t have account yet?{" "}
-        <Link href="/signup" className="hover:underline text-blue-400">
-          Click here to create
+        Have an account?{" "}
+        <Link href="/login" className="text-blue-400 hover:underline">
+          Click here
         </Link>
         .
       </p>
 
-      <form onSubmit={handleLogin} className="mx-auto mt-10 space-y-5">
+      <form onSubmit={handleSignup} className="mx-auto mt-10 space-y-5">
         <div className="flex flex-col gap-1">
           <MainInput
             placeholder="youremail@mail.com"
@@ -63,7 +61,7 @@ const LoginPage = () => {
         {isLoading ? (
           <MainButton type="button">Loading...</MainButton>
         ) : (
-          <MainButton type="submit">Login</MainButton>
+          <MainButton type="submit">Create</MainButton>
         )}
 
         {error && (
@@ -76,4 +74,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;
