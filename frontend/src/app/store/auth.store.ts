@@ -114,21 +114,24 @@ export const useAuthStore = create<AuthState>((set) => ({
         isAuthenticated: true,
         isLoading: false,
         error: null,
+        message: response.data.message || "Conta criada com sucesso.",
       });
 
       toast.success(response.data.message || "Conta criada.");
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
-      const response = axiosError.message;
+      const response = axiosError.response;
+
+      let errorMessage = "Erro ao criar a conta.";
 
       if (response) {
-        const errorMessage = "Erro ao fazer login";
-        toast.error(errorMessage);
-        set({ error: errorMessage, isLoading: false });
+        errorMessage = response.data?.message || errorMessage;
       } else {
-        toast.error("Erro de conexão");
-        set({ error: "Erro de conexão", isLoading: false });
+        errorMessage = "Erro de conexão. Verifique sua internet";
       }
+
+      set({ isLoading: false, error: errorMessage });
+      toast.error(errorMessage);
     }
   },
 
