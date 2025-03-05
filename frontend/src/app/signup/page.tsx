@@ -12,19 +12,19 @@ import MainInput from "../components/ui/input";
 const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { signup, isLoading, error } = useAuthStore();
 
   const router = useRouter();
-
-  const { signup, isLoading, error } = useAuthStore();
 
   const handleSignup = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     await signup(email, password);
 
-    setTimeout(() => {
+    const { error } = useAuthStore.getState();
+    if (!error) {
       router.push("/dashboard");
-    });
+    }
   };
 
   return (
