@@ -42,7 +42,11 @@ export async function login(req, res) {
     ]);
 
     if (!email) {
-      res.status(400).json({ message: "Campo de email vazio." });
+      return res.status(400).json({ message: "Campo de email vazio." });
+    }
+
+    if (!password) {
+      return res.status(400).json({ message: "Campo de senha vazio." });
     }
 
     if (user.rows.length === 0) {
