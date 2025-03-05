@@ -41,6 +41,14 @@ export async function login(req, res) {
       email,
     ]);
 
+    if (!email) {
+      return res.status(400).json({ message: "Campo de email vazio." });
+    }
+
+    if (!password) {
+      return res.status(400).json({ message: "Campo de senha vazio." });
+    }
+
     if (user.rows.length === 0) {
       return res
         .status(400)
