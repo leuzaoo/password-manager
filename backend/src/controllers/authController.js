@@ -7,7 +7,7 @@ export async function signup(req, res) {
   const { email, password } = req.body;
 
 if(!password || typeof password !== "string"){
-return.status(400).json({message: "Insira um tipo válido de senha."})
+res.status(400).json({message: "Insira um tipo válido de senha."})
 }
 
   if (password.length < 6) {
