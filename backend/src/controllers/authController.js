@@ -6,6 +6,10 @@ import generateToken from "./../config/generateToken.js";
 export async function signup(req, res) {
   const { email, password } = req.body;
 
+  if (!password || typeof password !== "string" || password.length < 6) {
+    return res.status(400).json({ message: "Senha deve conter 6 caracteres." });
+  }
+
   try {
     const hashedPassword = await bcryptjs.hash(password, 10);
     const user = await pool.query(
