@@ -1,30 +1,13 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-
-import { useAuthStore } from "../store/auth.store";
-
-import MainButton from "../components/common/button";
+import Sidebar from "../components/ui/sidebar";
 
 const DashboardPage = () => {
-  const { logout } = useAuthStore();
-
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    await logout();
-
-    setTimeout(() => {
-      router.refresh();
-    }, 500);
-  };
   return (
-    <>
-      <div>DashboardPage</div>
-      <MainButton type="button" onClick={handleLogout}>
-        Sair
-      </MainButton>
-    </>
+    <div className="flex w-full">
+      <aside>
+        <Sidebar />
+      </aside>
+      <main className="flex-1 p-4">Dashboard content page</main>
+    </div>
   );
 };
 
