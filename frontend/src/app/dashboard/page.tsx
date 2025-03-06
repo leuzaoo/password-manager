@@ -1,14 +1,7 @@
-import Sidebar from "../components/ui/sidebar";
+import React from "react";
 
 const DashboardPage = () => {
-  return (
-    <div className="flex w-full">
-      <aside>
-        <Sidebar />
-      </aside>
-      <main className="flex-1 p-4">Dashboard content page</main>
-    </div>
-  );
+  return <div>DashboardPage</div>;
 };
 
 export default DashboardPage;
