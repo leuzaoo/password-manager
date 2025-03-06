@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import Link from "next/link";
 
 import {
@@ -14,8 +15,6 @@ import {
 } from "lucide-react";
 
 import { useAuthStore } from "@/app/store/auth.store";
-
-import { useState } from "react";
 
 const menuItems = [
   {
@@ -33,8 +32,8 @@ const menuItems = [
 const Sidebar = () => {
   const [showNavbar, setShowNavbar] = useState(true);
 
-  const router = useRouter();
   const pathname = usePathname();
+  const router = useRouter();
 
   const { user, logout } = useAuthStore();
 
