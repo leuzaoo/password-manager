@@ -1,10 +1,10 @@
 import React from "react";
 
 interface MainButtonProps {
-  children: string;
   type?: "submit" | "button" | "reset";
   onClick?: () => void;
   className?: string;
+  children: string;
 }
 
 const mainStyle =
