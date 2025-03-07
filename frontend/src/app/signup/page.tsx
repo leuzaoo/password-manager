@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 
 import { useAuthStore } from "../store/auth.store";
+import { LoaderCircleIcon } from "lucide-react";
 
 import MainButton from "../components/common/button";
 import MainInput from "../components/ui/input";
@@ -61,7 +62,9 @@ const SignupPage = () => {
         </p>
 
         {isLoading ? (
-          <MainButton type="button">...</MainButton>
+          <div className="flex justify-center rounded-lg bg-white py-4 text-black">
+            <LoaderCircleIcon className="animate-spin" />
+          </div>
         ) : (
           <MainButton type="submit">Criar conta</MainButton>
         )}

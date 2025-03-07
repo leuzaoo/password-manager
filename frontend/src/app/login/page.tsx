@@ -23,7 +23,7 @@ const LoginPage = () => {
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     await login(email, password);
-    router.push(callbackUrl || "/dashboard");
+    router.push(callbackUrl);
   };
 
   return (
