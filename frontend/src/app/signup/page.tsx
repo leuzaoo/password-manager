@@ -29,14 +29,8 @@ const SignupPage = () => {
 
   return (
     <section className="mx-auto flex h-screen w-screen max-w-7xl flex-col items-center justify-center">
-      <h1 className="text-5xl font-semibold">Create your account</h1>
-      <p>
-        Have an account?{" "}
-        <Link href="/login" className="text-blue-400 hover:underline">
-          Click here
-        </Link>
-        .
-      </p>
+      <h1 className="text-5xl font-semibold">Crie sua conta</h1>
+      <p className="font-light">Salve suas senhas | Livre-se de preocupações</p>
 
       <form onSubmit={handleSignup} className="mx-auto mt-10 space-y-5">
         <div className="flex flex-col gap-1">
@@ -50,18 +44,26 @@ const SignupPage = () => {
         </div>
         <div className="flex flex-col gap-1">
           <MainInput
-            placeholder="must have 6 characters"
+            placeholder="deve conter 6 caracteres"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
-            label="Password"
+            label="Senha"
             type="password"
           />
         </div>
 
+        <p className="font-light">
+          Já tem uma conta?{" "}
+          <Link href="/login" className="text-blue-400 hover:underline">
+            Entrar agora
+          </Link>
+          .
+        </p>
+
         {isLoading ? (
-          <MainButton type="button">Loading...</MainButton>
+          <MainButton type="button">...</MainButton>
         ) : (
-          <MainButton type="submit">Create</MainButton>
+          <MainButton type="submit">Criar conta</MainButton>
         )}
 
         {error && (
