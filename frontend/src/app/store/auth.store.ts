@@ -63,7 +63,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   login: async (email, password) => {
-    set({ isLoading: true });
+    set({ isLoading: false });
 
     try {
       const response: AxiosResponse<{ user: User; message: string }> =
@@ -77,7 +77,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({
         user: response.data.user,
         isAuthenticated: true,
-        isLoading: false,
+        isLoading: true,
         error: null,
       });
 
@@ -98,7 +98,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   signup: async (email, password) => {
-    set({ isLoading: true });
+    set({ isLoading: false });
 
     try {
       const response: AxiosResponse<{ user: User; message: string }> =
@@ -112,7 +112,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({
         user: response.data.user,
         isAuthenticated: true,
-        isLoading: false,
+        isLoading: true,
         error: null,
         message: response.data.message || "Conta criada com sucesso.",
       });
