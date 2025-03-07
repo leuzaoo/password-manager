@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 
 import { useAuthStore } from "../store/auth.store";
+import { LoaderCircleIcon } from "lucide-react";
 
 import MainButton from "../components/common/button";
 import MainInput from "../components/ui/input";
@@ -21,29 +22,21 @@ const LoginPage = () => {
 
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-
     await login(email, password);
-
-    setTimeout(() => {
-      router.push(callbackUrl);
-    }, 500);
+    router.push(callbackUrl);
   };
 
   return (
     <section className="mx-auto flex h-screen w-screen max-w-7xl flex-col items-center justify-center">
-      <h1 className="text-5xl font-semibold">Access your account.</h1>
-      <p>
-        Don&apos;t have account yet?{" "}
-        <Link href="/signup" className="text-blue-400 hover:underline">
-          Click here to create
-        </Link>
-        .
-      </p>
+      <h1 className="text-5xl font-bold">
+        <span className="font-light opacity-80">Pass</span>Vault
+      </h1>
+      <p className="font-light">Salve suas senhas | Livre-se de preocupações</p>
 
       <form onSubmit={handleLogin} className="mx-auto mt-10 space-y-5">
         <div className="flex flex-col gap-1">
           <MainInput
-            placeholder="youremail@mail.com"
+            placeholder="seuemail@mail.com"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
             label="Email"
@@ -52,18 +45,28 @@ const LoginPage = () => {
         </div>
         <div className="flex flex-col gap-1">
           <MainInput
-            placeholder="must have 6 characters"
+            placeholder="mínimo 6 caracteres"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
-            label="Password"
+            label="Senha"
             type="password"
           />
         </div>
 
+        <p className="font-light">
+          Ainda não tem uma conta?{" "}
+          <Link href="/signup" className="text-blue-400 hover:underline">
+            Crie agora
+          </Link>
+          .
+        </p>
+
         {isLoading ? (
-          <MainButton type="button">Loading...</MainButton>
+          <div className="flex justify-center rounded-lg bg-white py-4 text-black">
+            <LoaderCircleIcon className="animate-spin" />
+          </div>
         ) : (
-          <MainButton type="submit">Login</MainButton>
+          <MainButton type="submit">Entrar</MainButton>
         )}
 
         {error && (
