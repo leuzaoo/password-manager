@@ -20,12 +20,12 @@ const menuItems = [
   {
     label: "Visão geral",
     to: "/dashboard",
-    icon: <LayoutDashboardIcon />,
+    icon: <LayoutDashboardIcon strokeWidth={1.5} width={24} />,
   },
   {
     label: "Minhas senhas",
     to: "/dashboard/senhas",
-    icon: <LockKeyholeIcon />,
+    icon: <LockKeyholeIcon strokeWidth={1.5} width={24} />,
   },
 ];
 
@@ -51,7 +51,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`flex h-screen flex-col justify-between bg-green-950/60 py-4 pl-4 ${showNavbar ? "w-72" : "w-20"} transition-all duration-500 ease-in-out`}
+      className={`border-primary-white/10 flex h-screen flex-col items-center justify-between border-r py-4 transition-all duration-500 ease-in-out ${showNavbar ? "w-56" : "w-28"}`}
     >
       <div>
         <div className="flex items-center justify-between">
@@ -60,7 +60,11 @@ const Sidebar = () => {
             <div
               className={`${showNavbar ? "opacity-100" : "opacity-0"} transition-all duration-700 ease-in-out`}
             >
-              {showNavbar && <p className="text-xl font-light">PassVault</p>}
+              {showNavbar && (
+                <p className="text-xl font-semibold text-green-400">
+                  <span className="font-extralight">Pass</span>Vault
+                </p>
+              )}
             </div>
           </div>
           <button className="cursor-pointer pr-2" onClick={handleHideNavbar}>
@@ -68,47 +72,51 @@ const Sidebar = () => {
           </button>
         </div>
         <div className="mt-10">
-          <ul className="space-y-3">
+          <ul className="start flex flex-col space-y-3">
             {menuItems.map((item) => (
-              <li
-                key={item.label}
-                className={`py-2 text-lg font-light hover:border-r-6 hover:border-green-400/50 ${
-                  pathname === item.to ? "border-r-6" : ""
-                }`}
-              >
-                <Link href={item.to} className="flex items-center gap-3">
-                  {item.icon}
-                  <p
-                    className={`transition-all duration-1000 ease-in-out ${showNavbar ? "opacity-100" : "opacity-0"}`}
-                  >
-                    {showNavbar && item.label}
-                  </p>
-                </Link>
-              </li>
+              <Link key={item.label} href={item.to}>
+                <li
+                  className={`flex items-center justify-start transition-all duration-500 ease-in-out ${
+                    item.to === pathname
+                      ? "bg-primary-white text-primary-dark max-w-max rounded-full px-5 py-2 font-bold"
+                      : "py-2 font-light"
+                  }`}
+                >
+                  <div>
+                    {!showNavbar ? (
+                      <p>{item.icon}</p>
+                    ) : (
+                      <p className={`flex justify-start gap-2`}>
+                        {item.icon} {item.label}
+                      </p>
+                    )}
+                  </div>
+                </li>
+              </Link>
             ))}
           </ul>
-          <hr className="my-10 opacity-20" />
-          {showNavbar && (
+          <hr className="my-10 opacity-10" />
+          {showNavbar ? (
             <div>
               <p className="font-light tracking-widest uppercase">Conta</p>
               <div className="mt-3 flex items-center gap-3 py-3 font-light">
-                <UserCircle2Icon size={28} />
+                <UserCircle2Icon size={28} strokeWidth={1.5} />
                 {user?.email}
               </div>
             </div>
+          ) : (
+            <UserCircle2Icon strokeWidth={1.5} size={28} />
           )}
         </div>
       </div>
 
-      <div className={`${showNavbar ? "pr-4" : "pr-4"}`}>
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="flex w-full cursor-pointer justify-center rounded-lg bg-white py-3 text-neutral-950 transition-all duration-300 ease-in-out hover:opacity-60"
-        >
-          {showNavbar ? <p>Sair</p> : <LogOutIcon />}
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={handleLogout}
+        className="w-full max-w-max cursor-pointer rounded-lg bg-white px-6 py-3 text-neutral-950 transition-all duration-300 ease-in-out hover:opacity-60"
+      >
+        {showNavbar ? <p>Sair da conta</p> : <LogOutIcon />}
+      </button>
     </div>
   );
 };
