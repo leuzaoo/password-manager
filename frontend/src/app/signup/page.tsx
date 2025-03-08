@@ -13,68 +13,75 @@ import MainInput from "../components/ui/input";
 const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signup, isLoading, error } = useAuthStore();
 
   const router = useRouter();
+  const { signup, isLoading } = useAuthStore();
 
-  const handleSignup = async (e: { preventDefault: () => void }) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-
     await signup(email, password);
-
-    const { error } = useAuthStore.getState();
-    if (!error) {
+    if (!useAuthStore.getState().error) {
       router.push("/dashboard");
     }
   };
 
+  const renderLoader = () => (
+    <div className="flex justify-center rounded-lg bg-white py-4 text-black">
+      <LoaderCircleIcon className="animate-spin" />
+    </div>
+  );
+
+  const renderForm = () => (
+    <form onSubmit={handleSignup} className="mt-5 min-w-2xs space-y-5">
+      <div className="flex flex-col gap-1">
+        <MainInput
+          placeholder="seuemail@mail.com"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          label="Email"
+          type="mail"
+          className="bg-primary-white/10"
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        <MainInput
+          placeholder="mínimo 6 caracteres"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+          label="Senha"
+          type="password"
+          className="bg-primary-white/10"
+        />
+      </div>
+
+      <p className="font-light">
+        Já tem uma conta?{" "}
+        <Link href="/login" className="text-blue-400 hover:underline">
+          Entrar agora
+        </Link>
+        .
+      </p>
+
+      {isLoading ? (
+        renderLoader()
+      ) : (
+        <MainButton type="submit">Criar conta</MainButton>
+      )}
+    </form>
+  );
+
   return (
-    <section className="mx-auto flex h-screen w-screen max-w-7xl flex-col items-center justify-center">
-      <h1 className="text-5xl font-semibold">Crie sua conta</h1>
-      <p className="font-light">Salve suas senhas | Livre-se de preocupações</p>
+    <section className="mx-auto flex h-screen w-screen flex-col items-center justify-center bg-black/50 px-4">
+      <h1 className="text-5xl font-bold">
+        <span className="font-light opacity-80">Pass</span>Vault
+      </h1>
+      <p className="mt-3 text-sm font-light">
+        Salve suas senhas | Livre-se de preocupações
+      </p>
+      <hr className="border-primary-white mt-5 min-w-2xs border-t opacity-30" />
+      <h2 className="mt-5 text-2xl">Crie sua conta</h2>
 
-      <form onSubmit={handleSignup} className="mx-auto mt-10 space-y-5">
-        <div className="flex flex-col gap-1">
-          <MainInput
-            placeholder="youremail@mail.com"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            label="Email"
-            type="mail"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <MainInput
-            placeholder="deve conter 6 caracteres"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            label="Senha"
-            type="password"
-          />
-        </div>
-
-        <p className="font-light">
-          Já tem uma conta?{" "}
-          <Link href="/login" className="text-blue-400 hover:underline">
-            Entrar agora
-          </Link>
-          .
-        </p>
-
-        {isLoading ? (
-          <div className="flex justify-center rounded-lg bg-white py-4 text-black">
-            <LoaderCircleIcon className="animate-spin" />
-          </div>
-        ) : (
-          <MainButton type="submit">Criar conta</MainButton>
-        )}
-
-        {error && (
-          <div className="mt-4 mb-6 flex items-center gap-2 text-sm text-red-600">
-            <p className="font-semibold">{error}</p>
-          </div>
-        )}
-      </form>
+      {renderForm()}
     </section>
   );
 };

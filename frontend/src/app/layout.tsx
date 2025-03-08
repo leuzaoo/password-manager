@@ -22,8 +22,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
-        <ToastContainer closeButton autoClose={2000} />
         <h1 className="sr-only">Gerenciador de senhas</h1>
+        <ToastContainer closeButton autoClose={2000} />
         {children}
       </body>
     </html>
