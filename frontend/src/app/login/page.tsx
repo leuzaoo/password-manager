@@ -18,63 +18,70 @@ const LoginPage = () => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
-  const { login, isLoading, error } = useAuthStore();
+  const { login, isLoading } = useAuthStore();
 
-  const handleLogin = async (e: { preventDefault: () => void }) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     await login(email, password);
     router.push(callbackUrl);
   };
 
+  const renderLoader = () => (
+    <div className="flex justify-center rounded-lg bg-white py-4 text-black">
+      <LoaderCircleIcon className="animate-spin" />
+    </div>
+  );
+
+  const renderForm = () => (
+    <form onSubmit={handleLogin} className="mt-5 min-w-2xs space-y-5">
+      <div className="flex flex-col gap-1">
+        <MainInput
+          placeholder="seuemail@mail.com"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          label="Email"
+          type="mail"
+          className="bg-primary-white/10"
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        <MainInput
+          placeholder="mínimo 6 caracteres"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+          label="Senha"
+          type="password"
+          className="bg-primary-white/10"
+        />
+      </div>
+
+      <p className="font-light">
+        Ainda não tem uma conta?{" "}
+        <Link href="/signup" className="text-blue-400 hover:underline">
+          Crie agora
+        </Link>
+        .
+      </p>
+
+      {isLoading ? (
+        renderLoader()
+      ) : (
+        <MainButton type="submit">Entrar</MainButton>
+      )}
+    </form>
+  );
+
   return (
-    <section className="mx-auto flex h-screen w-screen max-w-7xl flex-col items-center justify-center">
+    <section className="mx-auto flex h-screen w-screen flex-col items-center justify-center bg-black/50 px-4">
       <h1 className="text-5xl font-bold">
         <span className="font-light opacity-80">Pass</span>Vault
       </h1>
-      <p className="font-light">Salve suas senhas | Livre-se de preocupações</p>
-
-      <form onSubmit={handleLogin} className="mx-auto mt-10 space-y-5">
-        <div className="flex flex-col gap-1">
-          <MainInput
-            placeholder="seuemail@mail.com"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            label="Email"
-            type="mail"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <MainInput
-            placeholder="mínimo 6 caracteres"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            label="Senha"
-            type="password"
-          />
-        </div>
-
-        <p className="font-light">
-          Ainda não tem uma conta?{" "}
-          <Link href="/signup" className="text-blue-400 hover:underline">
-            Crie agora
-          </Link>
-          .
-        </p>
-
-        {isLoading ? (
-          <div className="flex justify-center rounded-lg bg-white py-4 text-black">
-            <LoaderCircleIcon className="animate-spin" />
-          </div>
-        ) : (
-          <MainButton type="submit">Entrar</MainButton>
-        )}
-
-        {error && (
-          <div className="mt-4 mb-6 flex items-center gap-2 text-sm text-red-600">
-            <p className="font-semibold">{error}</p>
-          </div>
-        )}
-      </form>
+      <p className="mt-3 text-sm font-light">
+        Salve suas senhas | Livre-se de preocupações
+      </p>
+      <hr className="border-primary-white mt-5 w-full max-w-2xs min-w-2xs border-t opacity-30" />
+      <h1 className="mt-5 text-2xl">Acesse sua conta</h1>
+      {renderForm()}
     </section>
   );
 };
