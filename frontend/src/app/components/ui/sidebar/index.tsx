@@ -57,17 +57,9 @@ const Sidebar = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <LockKeyholeOpenIcon className="text-green-400" size={28} />{" "}
-            <div
-              className={`${showNavbar ? "opacity-100" : "opacity-0"} transition-all duration-700 ease-in-out`}
-            >
-              {showNavbar && (
-                <p className="text-xl font-semibold text-green-400">
-                  <span className="font-extralight">Pass</span>Vault
-                </p>
-              )}
-            </div>
+            <h1 className="sr-only">PassVault</h1>
           </div>
-          <button className="cursor-pointer pr-2" onClick={handleHideNavbar}>
+          <button className="cursor-pointer" onClick={handleHideNavbar}>
             {showNavbar ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </button>
         </div>
