@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { PencilIcon, SearchIcon, TrashIcon, XIcon } from "lucide-react";
+
+import { SearchIcon, XIcon } from "lucide-react";
+
+import DashboardTable from "@/app/components/ui/table";
 
 type Props = {
   value: string;
@@ -92,49 +95,7 @@ const DashboardPage = () => {
       <section className="mt-10 gap-4">
         <h2 className="text-2xl font-medium">Senhas</h2>
 
-        <table className="mt-5 table">
-          <thead>
-            <tr>
-              <th>Conta</th>
-              <th>Senha</th>
-              <th>Adicionado em</th>
-              <th>Categoria</th>
-              <th>Ação</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Youtube</td>
-              <td>*********</td>
-              <td>4 dias atrás</td>
-              <td>Redes sociais</td>
-              <td className="flex gap-3">
-                <PencilIcon />
-                <TrashIcon />
-              </td>
-            </tr>
-            <tr>
-              <td>Itaú</td>
-              <td>*********</td>
-              <td>1 mês atrás</td>
-              <td>Bancos</td>
-              <td className="flex gap-3">
-                <PencilIcon />
-                <TrashIcon />
-              </td>
-            </tr>
-            <tr>
-              <td>Free Fire</td>
-              <td>*********</td>
-              <td>3 meses atrás</td>
-              <td>Jogos</td>
-              <td className="flex gap-3">
-                <PencilIcon />
-                <TrashIcon />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <DashboardTable />
       </section>
     </>
   );
