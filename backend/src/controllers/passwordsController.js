@@ -19,7 +19,7 @@ export async function addPassword(req, res) {
     }
 
     if (!platform || !login || !password) {
-      return res.status(400).json({message: "Todos os campos devem ser preenchidos."});
+      return res.status(400).json({ message: "Todos os campos devem ser preenchidos." });
     }
 
     const newPassword = await pool.query(
