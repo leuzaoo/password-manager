@@ -2,7 +2,7 @@ import pool from "../config/dbConfig.js"
 import jwt from "jsonwebtoken";
 
 export async function addPassword(req, res) {
-  const {platform, login, password} = req.body;
+  const { platform, login, password } = req.body;
 
   const token = req.cookies["password-manager"];
 
