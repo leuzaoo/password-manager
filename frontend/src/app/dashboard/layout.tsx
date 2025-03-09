@@ -11,8 +11,8 @@ const DashboardPage = ({
       <aside>
         <Sidebar />
       </aside>
-      <main className="flex-1 p-4">{children}</main>
-      <section>
+      <main className="flex-3 p-4">{children}</main>
+      <section className="flex-1">
         <LastUpdatesSection />
       </section>
     </div>
