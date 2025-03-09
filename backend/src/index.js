@@ -18,6 +18,7 @@ app.use(helmet());
 app.use(morgan("dev"));
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/passwords", passwordsRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

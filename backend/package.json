@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "create:usertable": "node src/scripts/userTable.js"
+    "create:userstable": "node src/scripts/userTable.js",
+    "create:passwordstable": "node src/scripts/passwordTable.js"
   },
   "keywords": [],
   "author": "",
