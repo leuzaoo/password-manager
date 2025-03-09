@@ -55,14 +55,6 @@ const LoginPage = () => {
         />
       </div>
 
-      <p className="font-light">
-        Ainda não tem uma conta?{" "}
-        <Link href="/signup" className="text-blue-400 hover:underline">
-          Crie agora
-        </Link>
-        .
-      </p>
-
       {isLoading ? (
         renderLoader()
       ) : (
@@ -81,6 +73,14 @@ const LoginPage = () => {
       </p>
       <hr className="border-primary-white mt-5 w-full max-w-2xs min-w-2xs border-t opacity-30" />
       <h1 className="mt-5 text-2xl">Acesse sua conta</h1>
+      <p className="text-sm font-light">
+        Ainda não tem uma conta?{" "}
+        <Link href="/signup" className="text-blue-400 hover:underline">
+          Crie agora
+        </Link>
+        .
+      </p>
+
       {renderForm()}
     </section>
   );
