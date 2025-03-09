@@ -7,7 +7,7 @@ export async function addPassword(req, res) {
   const token = req.cookies["password-manager"];
 
   if (!token) {
-    return res.status(401).json({message: "Usuário precisa estar logado."});
+    return res.status(401).json({ message: "Usuário precisa estar logado." });
   }
 
   try {
