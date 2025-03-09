@@ -15,7 +15,7 @@ export async function addPassword(req, res) {
     const userId = decoded.userId;
 
     if (!userId) {
-      return res.status(401).json({message: "Token inválido."});
+      return res.status(401).json({ message: "Token inválido." });
     }
 
     if (!platform || !login || !password) {
