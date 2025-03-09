@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useAuthStore } from "../store/auth.store";
 import { LoaderCircleIcon } from "lucide-react";
 
+import StrengthPassword from "@/app/components/ui/strength-password";
 import MainButton from "../components/common/button";
 import MainInput from "../components/ui/input";
 
@@ -54,13 +55,7 @@ const SignupPage = () => {
         />
       </div>
 
-      <p className="font-light">
-        Já tem uma conta?{" "}
-        <Link href="/login" className="text-blue-400 hover:underline">
-          Entrar agora
-        </Link>
-        .
-      </p>
+      <StrengthPassword password={password} />
 
       {isLoading ? (
         renderLoader()
@@ -80,6 +75,13 @@ const SignupPage = () => {
       </p>
       <hr className="border-primary-white mt-5 min-w-2xs border-t opacity-30" />
       <h2 className="mt-5 text-2xl">Crie sua conta</h2>
+      <p className="text-sm font-light">
+        Já tem uma conta?{" "}
+        <Link href="/login" className="text-blue-400 hover:underline">
+          Entrar agora
+        </Link>
+        .
+      </p>
 
       {renderForm()}
     </section>
