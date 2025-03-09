@@ -14,3 +14,22 @@
 body {
     @apply bg-primary-dark text-primary-white;
 }
+
+.table {
+    @apply w-full;
+}
+
+.table thead th {
+    text-align: left;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 200;
+    color: var(--color-primary-white);
+    border-top: 1px solid var(--color-secondary-dark);
+    border-bottom: 1px solid var(--color-secondary-dark);
+}
+
+.table tbody td {
+    padding: 12px;
+    font-weight: 300;
+}
