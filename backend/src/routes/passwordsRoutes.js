@@ -1,6 +1,6 @@
 import express from 'express'
 
-import {addPassword} from "../controllers/passwordsController.js"
+import { addPassword } from "../controllers/passwordsController.js"
 
 const router = express.Router();
 
