@@ -4,10 +4,10 @@ await pool.query(
   `CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR NOT NULL,  
-    secret_2fa TEXT,  
+    password TEXT NOT NULL,  
+    secret_2fa VARCHAR(255),  
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP);`
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP);`,
 );
 
 console.log("Users table created succesfully");
