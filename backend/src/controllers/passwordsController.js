@@ -30,6 +30,12 @@ export async function addPassword(req, res) {
       return res.status(400).json({ message: "Campo de senha vazio." });
     }
 
+    if (password < 5) {
+      return res
+        .status(400)
+        .json({ message: "Senha deve conter mais de 6 caracteres." });
+    }
+
     const newPassword = await pool.query(
       "INSERT INTO passwords (user_id, platform, login, password) VALUES ($1, $2, $3, $4) RETURNING id, platform, login",
       [userId, platform, login, password],
