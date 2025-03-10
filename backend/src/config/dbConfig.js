@@ -1,6 +1,7 @@
-import pg from "pg";
-const { Pool } = pg;
 import dotenv from "dotenv";
+import pg from "pg";
+
+const { Pool } = pg;
 
 dotenv.config();
 
@@ -11,10 +12,5 @@ const pool = new Pool({
   port: process.env.DB_PORT,
   database: process.env.DB_DATABASE,
 });
-
-pool
-  .connect()
-  .then(() => console.log("Database connected successfully"))
-  .catch((err) => console.log(err));
 
 export default pool;

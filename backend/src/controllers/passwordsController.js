@@ -30,19 +30,28 @@ export async function addPassword(req, res) {
       return res.status(400).json({ message: "Campo de senha vazio." });
     }
 
-    const newPassword = await pool.query(
-      "INSERT INTO passwords (user_id, platform, login, password) VALUES ($1, $2, $3, $4) RETURNING id, platform, login",
-      [userId, platform, login, password],
-    );
+    const client = await pool.connect();
 
-    res.status(201).json({
-      message: "Senha salva com sucesso.",
-      password: {
-        id: newPassword.rows[0].id,
-        platform: newPassword.rows[0].platform,
-        login: newPassword.rows[0].login,
-      },
-    });
+    try {
+      const newPassword = await pool.query(
+        "INSERT INTO passwords (user_id, platform, login, password) VALUES ($1, $2, $3, $4) RETURNING id, platform, login",
+        [userId, platform, login, password],
+      );
+
+      res.status(201).json({
+        message: "Senha salva com sucesso.",
+        password: {
+          id: newPassword.rows[0].id,
+          platform: newPassword.rows[0].platform,
+          login: newPassword.rows[0].login,
+        },
+      });
+    } catch (error) {
+      console.error("Error after trying to save password on database: ", error);
+      res.status(500).json({ message: error.message });
+    } finally {
+      client.release();
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
