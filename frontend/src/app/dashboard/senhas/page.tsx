@@ -6,7 +6,6 @@ const PasswordsPage = () => {
   return (
     <div>
       <h2 className="text-2xl font-medium">Minhas senhas</h2>
-
       <PasswordTable />
     </div>
   );
