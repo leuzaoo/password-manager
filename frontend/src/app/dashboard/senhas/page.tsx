@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 
+import { usePassStore } from "@/app/store/passwords.store";
 import { PlusCircleIcon } from "lucide-react";
 
 import PasswordTable from "@/app/components/ui/table";
@@ -13,12 +14,21 @@ const PasswordsPage = () => {
   const [password, setPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
 
+  const { addPassword } = usePassStore();
+
   const handleShowModal = () => {
     setShowModal(!showModal);
   };
 
-  // todo: create the handleSalve function
-  const handleSave = () => {};
+  const handleSave = async () => {
+    await addPassword(platform, login, password);
+
+    setPlatform("");
+    setLogin("");
+    setPassword("");
+
+    setShowModal(false);
+  };
 
   return (
     <div className="relative">
