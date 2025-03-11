@@ -1,6 +1,6 @@
 import { PencilIcon, TrashIcon } from "lucide-react";
 
-const DashboardTable = () => {
+const PasswordTable = () => {
   return (
     <>
       <table className="mt-5 table">
@@ -50,4 +50,4 @@ const DashboardTable = () => {
   );
 };
 
-export default DashboardTable;
+export default PasswordTable;

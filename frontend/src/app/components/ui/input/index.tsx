@@ -6,6 +6,7 @@ type Props = {
   type: string;
   value: string;
   className?: string;
+  labelStyle?: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -18,10 +19,11 @@ const MainInput = ({
   value,
   className,
   onChange,
+  labelStyle,
 }: Props) => {
   return (
     <>
-      <label>{label}</label>
+      <label className={labelStyle}>{label}</label>
       <input
         onChange={onChange}
         value={value}

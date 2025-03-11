@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
+
+import { CircleAlertIcon } from "lucide-react";
 
 import { SearchIcon, XIcon } from "lucide-react";
-
-import DashboardTable from "@/app/components/ui/table";
 
 type Props = {
   value: string;
@@ -92,10 +93,23 @@ const DashboardPage = () => {
           />
         </div>
       </header>
-      <section className="mt-10 gap-4">
-        <h2 className="text-2xl font-medium">Senhas</h2>
 
-        <DashboardTable />
+      <section className="mt-10 gap-4">
+        <h2 className="text-2xl font-medium">Visão geral</h2>
+
+        <div className="mt-20 flex flex-col items-center justify-center">
+          <div className="flex items-center justify-center gap-3">
+            <CircleAlertIcon className="text-primary-alert" size={36} />
+            <p className="text-3xl">Página em construção</p>
+          </div>
+          <hr className="border-primary-white/10 mt-5 min-w-96" />
+          <Link
+            className="bg-primary-white text-primary-dark mt-5 rounded-lg px-5 py-3 font-semibold"
+            href="/dashboard/senhas"
+          >
+            Minhas senhas
+          </Link>
+        </div>
       </section>
     </>
   );
