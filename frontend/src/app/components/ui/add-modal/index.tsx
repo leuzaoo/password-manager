@@ -5,7 +5,7 @@ import { SquarePlusIcon } from "lucide-react";
 import Button from "@/app/components/common/button";
 import MainInput from "@/app/components/ui/input";
 
-interface Props {
+type Props = {
   loginValue: string;
   loginOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   passwordValue: string;
