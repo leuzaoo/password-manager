@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { CircleAlertIcon } from "lucide-react";
 
 import { SearchIcon, XIcon } from "lucide-react";
+import { usePassStore } from "@/app/store/passwords.store";
 
 type Props = {
   value: string;
@@ -75,6 +76,18 @@ const DesktopHeader = ({ value, onChange }: Props) => {
 
 const DashboardPage = () => {
   const [search, setSearch] = useState("");
+  const [passwordCount, setPasswordCount] = useState(0);
+
+  const { getPassword, passwords } = usePassStore();
+
+  useEffect(() => {
+    const fetchPasswords = async () => {
+      await getPassword();
+      setPasswordCount(passwords.length);
+    };
+
+    fetchPasswords();
+  }, [getPassword, passwords.length]);
 
   return (
     <>
@@ -97,18 +110,23 @@ const DashboardPage = () => {
       <section className="mt-10 gap-4">
         <h2 className="text-2xl font-medium">Visão geral</h2>
 
-        <div className="mt-20 flex flex-col items-center justify-center">
-          <div className="flex items-center justify-center gap-3">
-            <CircleAlertIcon className="text-primary-alert" size={36} />
-            <p className="text-3xl">Página em construção</p>
+        <div className="text-primary-dark mt-5 grid w-full rounded-xl text-center">
+          <div className="rounded-xl bg-white p-3">
+            <p className="font-semibold">Senhas salvas</p>
+            <span className="text-3xl">{passwordCount}</span>
           </div>
-          <hr className="border-primary-white/10 mt-5 min-w-96" />
-          <Link
-            className="bg-primary-white text-primary-dark mt-5 rounded-lg px-5 py-3 font-semibold"
-            href="/dashboard/senhas"
-          >
-            Minhas senhas
-          </Link>
+        </div>
+        <div className="mt-5 flex flex-col items-center justify-center">
+          <p className="font-extralight">
+            Essa página está em desenvolvimento.{" "}
+            <Link
+              className="text-primary-blue font-semibold underline"
+              href="/dashboard/senhas"
+            >
+              Clique aqui
+            </Link>{" "}
+            para navegar a página &#34;Minhas senhas&#34;.
+          </p>
         </div>
       </section>
     </>
