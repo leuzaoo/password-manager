@@ -39,6 +39,54 @@ export async function addPassword(req, res) {
   });
 }
 
+export async function updatePassword(req, res) {
+  authenticateUser(req, res, async () => {
+    const { id } = req.params;
+    const { platform, login, password } = req.body;
+    const userId = req.userId;
+
+    if (!platform || !login || !password) {
+      return res
+        .status(400)
+        .json({ message: "Todos os campos são obrigatórios." });
+    }
+
+    try {
+      const client = await pool.connect();
+
+      try {
+        const result = await client.query(
+          `UPDATE passwords
+             SET platform = $1, login = $2, password = $3
+             WHERE id = $4 AND user_id = $5
+               RETURNING id, platform, login, password`,
+          [platform, login, password, id, userId],
+        );
+
+        if (result.rowCount === 0) {
+          return res.status(404).json({
+            message:
+              "Senha não encontrada ou você não tem permissão para editá-la.",
+          });
+        }
+
+        res.status(200).json({
+          message: "Senha atualizada com sucesso.",
+          password: result.rows[0],
+        });
+      } catch (error) {
+        console.error("Erro ao atualizar a senha: ", error);
+        res.status(500).json({ message: error.message });
+      } finally {
+        client.release();
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+}
+
 export async function deletePassword(req, res) {
   authenticateUser(req, res, async () => {
     const { id } = req.params;
@@ -53,12 +101,14 @@ export async function deletePassword(req, res) {
 
       try {
         const passwordCheck = await client.query(
-            "SELECT * FROM passwords WHERE id = $1 AND user_id = $2",
-            [id, userId]
+          "SELECT * FROM passwords WHERE id = $1 AND user_id = $2",
+          [id, userId],
         );
 
         if (passwordCheck.rows.length === 0) {
-          return res.status(404).json({ message: "Senha não encontrada ou não pertence a você." });
+          return res
+            .status(404)
+            .json({ message: "Senha não encontrada ou não pertence a você." });
         }
 
         await client.query("DELETE FROM passwords WHERE id = $1", [id]);

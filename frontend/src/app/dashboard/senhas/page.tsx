@@ -8,30 +8,57 @@ import { PlusCircleIcon } from "lucide-react";
 import PasswordTable from "@/app/components/ui/table";
 import AddModal from "@/app/components/ui/add-modal";
 
+interface PasswordType {
+  id: string;
+  platform: string;
+  login: string;
+  password: string;
+}
+
 const PasswordsPage = () => {
   const [platform, setPlatform] = useState("");
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [editingPasswordId, setEditingPasswordId] = useState<string | null>(
+    null,
+  );
 
-  const { addPassword, getPassword, passwords, isLoading } = usePassStore();
+  const { addPassword, getPassword, passwords, isLoading, updatePassword } =
+    usePassStore();
 
   useEffect(() => {
     getPassword();
   }, [getPassword]);
 
   const handleShowModal = () => {
-    setShowModal(!showModal);
+    setEditingPasswordId(null);
+    setPlatform("");
+    setLogin("");
+    setPassword("");
+    setShowModal(true);
   };
 
   const handleSave = async () => {
-    await addPassword(platform, login, password);
+    if (editingPasswordId) {
+      await updatePassword(editingPasswordId, platform, login, password);
+    } else {
+      await addPassword(platform, login, password);
+    }
 
     setPlatform("");
     setLogin("");
     setPassword("");
     setShowModal(false);
     getPassword();
+  };
+
+  const handleEdit = (password: PasswordType) => {
+    setEditingPasswordId(password.id);
+    setPlatform(password.platform);
+    setLogin(password.login);
+    setPassword(password.password);
+    setShowModal(true);
   };
 
   return (
@@ -57,6 +84,7 @@ const PasswordsPage = () => {
             passwordOnChange={(e) => setPassword(e.target.value)}
             closeButton={() => setShowModal(false)}
             saveButton={handleSave}
+            isEdit={!!editingPasswordId}
           />
         </div>
       )}
@@ -64,7 +92,7 @@ const PasswordsPage = () => {
       {isLoading ? (
         <p>Carregando senhas</p>
       ) : (
-        <PasswordTable passwords={passwords} />
+        <PasswordTable passwords={passwords} onEdit={handleEdit} />
       )}
     </div>
   );
