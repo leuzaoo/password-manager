@@ -3,9 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { CircleAlertIcon } from "lucide-react";
-
-import { SearchIcon, XIcon } from "lucide-react";
+import { CircleAlertIcon, SearchIcon, XIcon  } from "lucide-react";
 import { usePassStore } from "@/app/store/passwords.store";
 
 type Props = {
