@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { CircleAlertIcon, SearchIcon, XIcon  } from "lucide-react";
 import { usePassStore } from "@/app/store/passwords.store";
+import { SearchIcon, XIcon } from "lucide-react";
 
 type Props = {
   value: string;
