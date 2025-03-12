@@ -1,5 +1,7 @@
 import { PencilIcon, TrashIcon } from "lucide-react";
 
+import { usePassStore } from "@/app/store/passwords.store";
+
 interface Password {
   id: string;
   platform: string;
@@ -12,6 +14,13 @@ interface Props {
 }
 
 const PasswordTable = ({ passwords }: Props) => {
+  const { deletePassword } = usePassStore();
+
+  const handleDelete = async (id: string) => {
+    if (confirm("Certeza que quer excluir esta conta?"))
+      await deletePassword(id);
+  };
+
   return (
     <>
       <table className="mt-5 table">
@@ -36,7 +45,10 @@ const PasswordTable = ({ passwords }: Props) => {
                   <PencilIcon size={18} />
                 </button>
                 <button>
-                  <TrashIcon size={18} />
+                  <TrashIcon
+                    size={18}
+                    onClick={() => handleDelete(password.id)}
+                  />
                 </button>
               </td>
             </tr>

@@ -39,6 +39,44 @@ export async function addPassword(req, res) {
   });
 }
 
+export async function deletePassword(req, res) {
+  authenticateUser(req, res, async () => {
+    const { id } = req.params;
+    const userId = req.userId;
+
+    if (!id) {
+      return res.status(400).json({ message: "ID da senha é obrigatório." });
+    }
+
+    try {
+      const client = await pool.connect();
+
+      try {
+        const passwordCheck = await client.query(
+            "SELECT * FROM passwords WHERE id = $1 AND user_id = $2",
+            [id, userId]
+        );
+
+        if (passwordCheck.rows.length === 0) {
+          return res.status(404).json({ message: "Senha não encontrada ou não pertence a você." });
+        }
+
+        await client.query("DELETE FROM passwords WHERE id = $1", [id]);
+
+        res.status(200).json({ message: "Senha excluída com sucesso." });
+      } catch (error) {
+        console.error("Erro ao deletar senha no banco:", error);
+        res.status(500).json({ message: error.message });
+      } finally {
+        client.release();
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+}
+
 export async function getAllPassword(req, res) {
   authenticateUser(req, res, async () => {
     const userId = req.userId;

@@ -27,6 +27,7 @@ interface PassState {
     password: string,
   ) => Promise<void>;
   getPassword: () => Promise<void>;
+  deletePassword: (id: string) => Promise<void>;
 }
 
 export const usePassStore = create<PassState>((set) => ({
@@ -34,6 +35,31 @@ export const usePassStore = create<PassState>((set) => ({
   isLoading: false,
   error: null,
   message: null,
+
+  deletePassword: async (id: string) => {
+    set({ isLoading: true, error: null, message: null });
+
+    try {
+      const response: AxiosResponse<{ message: string }> = await axios.delete(
+        `${PASSWORD_API_URL}/delete-password/${id}`,
+      );
+
+      set((state) => ({
+        passwords: state.passwords.filter((password) => password.id !== id),
+        isLoading: false,
+        error: null,
+      }));
+
+      toast.success(response.data.message || "Senha excluída com sucesso!");
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>;
+      const errorMessage =
+        axiosError.response?.data?.message || "Erro ao excluir a senha";
+
+      set({ error: errorMessage, isLoading: false });
+      toast.error(errorMessage);
+    }
+  },
 
   addPassword: async (platform, login, password) => {
     set({ isLoading: true });
