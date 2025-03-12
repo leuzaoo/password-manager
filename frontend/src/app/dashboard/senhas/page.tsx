@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import { usePassStore } from "@/app/store/passwords.store";
+import { usePassStore } from "../../store/passwords.store";
 import { PlusCircleIcon } from "lucide-react";
 
 import PasswordTable from "@/app/components/ui/table";
@@ -14,7 +14,11 @@ const PasswordsPage = () => {
   const [password, setPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
 
-  const { addPassword } = usePassStore();
+  const { addPassword, getPassword, passwords, isLoading } = usePassStore();
+
+  useEffect(() => {
+    getPassword();
+  }, [getPassword]);
 
   const handleShowModal = () => {
     setShowModal(!showModal);
@@ -26,8 +30,8 @@ const PasswordsPage = () => {
     setPlatform("");
     setLogin("");
     setPassword("");
-
     setShowModal(false);
+    getPassword();
   };
 
   return (
@@ -57,7 +61,11 @@ const PasswordsPage = () => {
         </div>
       )}
 
-      <PasswordTable />
+      {isLoading ? (
+        <p>Carregando senhas</p>
+      ) : (
+        <PasswordTable passwords={passwords} />
+      )}
     </div>
   );
 };
