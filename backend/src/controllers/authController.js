@@ -6,6 +6,8 @@ import generateToken from "./../config/generateToken.js";
 export async function signup(req, res) {
   const { email, password } = req.body;
 
+  let client;
+
   try {
     if (!email || !password) {
       return res
@@ -31,7 +33,7 @@ export async function signup(req, res) {
         .json({ message: "Insira um tipo válido de senha." });
     }
 
-    const client = await pool.connect();
+    client = await pool.connect();
 
     try {
       const { rows } = await client.query(
@@ -77,9 +79,11 @@ export async function login(req, res) {
     return res.status(400).json({ message: "Email e senha são obrigatórios." });
   }
 
-  const client = await pool.connect();
+  let client;
 
   try {
+    client = await pool.connect();
+
     const { rows } = await client.query(
       "SELECT id, email, password FROM users WHERE email = $1",
       [email],
