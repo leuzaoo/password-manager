@@ -5,7 +5,7 @@ import { authenticateUser } from "../middleware/auth.middleware.js";
 export async function addPassword(req, res) {
   authenticateUser(req, res, async () => {
     const { platform, login, password } = req.body;
-    const userId = req.userId; // Agora o userId já está disponível
+    const userId = req.userId;
 
     if (!platform || !login || !password) {
       return res
@@ -54,8 +54,6 @@ export async function getAllPassword(req, res) {
     } catch (error) {
       console.error("Erro ao buscar senhas:", error);
       res.status(500).json({ message: error.message });
-    } finally {
-      client.release();
     }
   });
 }
