@@ -26,6 +26,7 @@ interface PassState {
     login: string,
     password: string,
   ) => Promise<void>;
+  getPassword: () => Promise<void>;
 }
 
 export const usePassStore = create<PassState>((set) => ({
@@ -59,6 +60,26 @@ export const usePassStore = create<PassState>((set) => ({
 
       set({ error: errorMessage, isLoading: false });
       toast.error(errorMessage);
+    }
+  },
+
+  getPassword: async () => {
+    set({ isLoading: true, error: null });
+
+    try {
+      const response: AxiosResponse<Password[]> = await axios.get(
+        `${PASSWORD_API_URL}/get-password`,
+      );
+      set({ passwords: response.data, isLoading: false });
+    } catch (error) {
+      console.error("Erro ao buscar senhas: ", error);
+      set({
+        error:
+          error.response?.data?.message ||
+          "Erro desconhecido ao buscar as senhas.",
+      });
+    } finally {
+      set({ isLoading: false });
     }
   },
 }));
