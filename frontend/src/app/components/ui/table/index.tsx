@@ -1,5 +1,4 @@
 import { PencilIcon, TrashIcon } from "lucide-react";
-
 import { usePassStore } from "@/app/store/passwords.store";
 
 interface Password {
@@ -11,9 +10,10 @@ interface Password {
 
 interface Props {
   passwords: Password[];
+  onEdit: (password: Password) => void;
 }
 
-const PasswordTable = ({ passwords }: Props) => {
+const PasswordTable = ({ passwords, onEdit }: Props) => {
   const { deletePassword } = usePassStore();
 
   const handleDelete = async (id: string) => {
@@ -41,14 +41,11 @@ const PasswordTable = ({ passwords }: Props) => {
               <td>{password.password}</td>
               <td>4 dias atrás</td>
               <td className="flex gap-3">
-                <button>
+                <button onClick={() => onEdit(password)}>
                   <PencilIcon size={18} />
                 </button>
-                <button>
-                  <TrashIcon
-                    size={18}
-                    onClick={() => handleDelete(password.id)}
-                  />
+                <button onClick={() => handleDelete(password.id)}>
+                  <TrashIcon size={18} />
                 </button>
               </td>
             </tr>

@@ -28,6 +28,12 @@ interface PassState {
   ) => Promise<void>;
   getPassword: () => Promise<void>;
   deletePassword: (id: string) => Promise<void>;
+  updatePassword: (
+    id: string,
+    platform: string,
+    login: string,
+    password: string,
+  ) => Promise<void>;
 }
 
 export const usePassStore = create<PassState>((set) => ({
@@ -35,31 +41,6 @@ export const usePassStore = create<PassState>((set) => ({
   isLoading: false,
   error: null,
   message: null,
-
-  deletePassword: async (id: string) => {
-    set({ isLoading: true, error: null, message: null });
-
-    try {
-      const response: AxiosResponse<{ message: string }> = await axios.delete(
-        `${PASSWORD_API_URL}/delete-password/${id}`,
-      );
-
-      set((state) => ({
-        passwords: state.passwords.filter((password) => password.id !== id),
-        isLoading: false,
-        error: null,
-      }));
-
-      toast.success(response.data.message || "Senha excluída com sucesso!");
-    } catch (error) {
-      const axiosError = error as AxiosError<{ message: string }>;
-      const errorMessage =
-        axiosError.response?.data?.message || "Erro ao excluir a senha";
-
-      set({ error: errorMessage, isLoading: false });
-      toast.error(errorMessage);
-    }
-  },
 
   addPassword: async (platform, login, password) => {
     set({ isLoading: true });
@@ -83,6 +64,59 @@ export const usePassStore = create<PassState>((set) => ({
       const axiosError = error as AxiosError<{ message: string }>;
       const errorMessage =
         axiosError.response?.data?.message || "Erro ao salvar a senha";
+
+      set({ error: errorMessage, isLoading: false });
+      toast.error(errorMessage);
+    }
+  },
+
+  updatePassword: async (id, platform, login, password) => {
+    set({ isLoading: true });
+
+    try {
+      const response: AxiosResponse<{ password: Password; message: string }> =
+        await axios.put(`${PASSWORD_API_URL}/update-password/${id}`, {
+          platform,
+          login,
+          password,
+        });
+
+      set((state) => ({
+        passwords: state.passwords.map((item) =>
+          item.id === id ? response.data.password : item,
+        ),
+        isLoading: false,
+        error: null,
+      }));
+
+      toast.success(response.data.message || "Senha atualizada com sucesso.");
+    } catch (error) {
+      console.error("Erro ao atualizar a senha: ", error);
+      toast.error("Erro ao atualizar a senha.");
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  deletePassword: async (id: string) => {
+    set({ isLoading: true, error: null, message: null });
+
+    try {
+      const response: AxiosResponse<{ message: string }> = await axios.delete(
+        `${PASSWORD_API_URL}/delete-password/${id}`,
+      );
+
+      set((state) => ({
+        passwords: state.passwords.filter((password) => password.id !== id),
+        isLoading: false,
+        error: null,
+      }));
+
+      toast.success(response.data.message || "Senha excluída com sucesso!");
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>;
+      const errorMessage =
+        axiosError.response?.data?.message || "Erro ao excluir a senha";
 
       set({ error: errorMessage, isLoading: false });
       toast.error(errorMessage);

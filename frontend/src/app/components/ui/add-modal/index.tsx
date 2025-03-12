@@ -1,11 +1,10 @@
 import React from "react";
-
-import { SquarePlusIcon } from "lucide-react";
-
+import { SquarePlusIcon, PencilIcon } from "lucide-react";
 import Button from "@/app/components/common/button";
 import MainInput from "@/app/components/ui/input";
 
 type Props = {
+  isEdit: boolean;
   loginValue: string;
   loginOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   passwordValue: string;
@@ -14,9 +13,10 @@ type Props = {
   platformOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   closeButton: () => void;
   saveButton: () => void;
-}
+};
 
 const AddModal = ({
+  isEdit,
   loginValue,
   loginOnChange,
   passwordValue,
@@ -28,9 +28,10 @@ const AddModal = ({
 }: Props) => {
   return (
     <div className="rounded-xl border-white/20 bg-white p-5 text-black">
-      <SquarePlusIcon />
-
-      <p className="mt-5 text-xl font-semibold">Cadastrar nova senha</p>
+      {isEdit ? <PencilIcon /> : <SquarePlusIcon />}
+      <p className="mt-5 text-xl font-semibold">
+        {isEdit ? "Editar senha" : "Cadastrar nova senha"}
+      </p>
       <span className="text-sm opacity-50">Insira as informações abaixo</span>
 
       <form className="mt-5 flex flex-col space-y-3">
@@ -39,8 +40,8 @@ const AddModal = ({
             className="!min-w-xs !p-2 text-sm"
             labelStyle="text-sm font-medium"
             label="Plataforma"
-            placeholder={"Nubank, Instagram, OLX"}
-            type={"text"}
+            placeholder="Nubank, Instagram, OLX"
+            type="text"
             value={platformValue}
             onChange={platformOnChange}
           />
@@ -51,8 +52,8 @@ const AddModal = ({
             className="!min-w-xs !p-2 text-sm"
             labelStyle="text-sm font-medium"
             label="Login"
-            placeholder={"Método de login na plataforma"}
-            type={"text"}
+            placeholder="Método de login na plataforma"
+            type="text"
             value={loginValue}
             onChange={loginOnChange}
           />
@@ -63,7 +64,7 @@ const AddModal = ({
             className="!min-w-xs !p-2 text-sm"
             labelStyle="text-sm font-medium"
             label="Senha"
-            placeholder={"Garanta que ela é segura"}
+            placeholder="Garanta que ela é segura"
             type="password"
             value={passwordValue}
             onChange={passwordOnChange}
@@ -81,7 +82,7 @@ const AddModal = ({
             className="bg-primary-blue !p-2 text-white hover:opacity-80"
             onClick={saveButton}
           >
-            Salvar
+            {isEdit ? "Atualizar" : "Salvar"}
           </Button>
         </div>
       </form>
